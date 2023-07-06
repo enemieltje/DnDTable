@@ -1,8 +1,7 @@
-import http from "node:http";
-import { server } from "websocket";
-import { LogManager, FileUtils, LoggerUtils, LogLevel } from "@utils";
+import { LogManager, LoggerUtils, LogLevel } from "@utils";
+import * as ws from "websocket";
 import { join } from "node:path";
-import { WsServer } from "./servers/WsServer";
+import { TypedMessage, WsServer } from "./servers/WsServer";
 
 const logger = LogManager.getLogger({
 	name: "index",
@@ -32,7 +31,31 @@ mapServer.on("wsConnect", connection => {
 	connection.send("Hello from Server!");
 });
 
+mapServer.on("wsTypedMessage", (message: TypedMessage, connection: ws.connection) => {
+	switch (message.type) {
+		case "requestMap": {
+			const mapName = message.data;
+			connection.send(
+				JSON.stringify({ type: "addMap", data: { name: mapName, map: getMap(mapName) } })
+			);
+			connection.send(WsServer.typedMessageToString("showMap", mapName));
+		}
+	}
+});
+
 controlServer.on("wsConnect", connection => {
 	mapServer.sendToSockets(`A new Controller appeared: ${connection.remoteAddress}`);
-	mapServer.sendToSockets(JSON.stringify({ type: "replaceText", data: "Controlled Maps!" }));
+	// mapServer.sendToSockets(JSON.stringify({ type: "replaceText", data: "Controlled Maps!" }));
 });
+
+controlServer.on("wsTypedMessage", (message: TypedMessage) => {
+	switch (message.type) {
+		case "showMap": {
+			mapServer.sendToSockets(JSON.stringify(message));
+		}
+	}
+});
+
+function getMap(mapName: string) {
+	return `data/maps/${mapName}.png`;
+}

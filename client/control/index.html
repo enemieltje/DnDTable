@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		Head
+		Maps:
 	</head>
 	<script>
 		// Create WebSocket connection.
-		const socket = new WebSocket("ws://localhost:8081", ["echo-protocol"]);
+		const socket = new WebSocket("ws://192.168.178.50:8081", ["echo-protocol"]);
 
 		// Connection opened
 		socket.addEventListener("open", event => {
@@ -16,8 +16,27 @@
 		socket.addEventListener("message", event => {
 			console.log("Message from server ", event.data);
 		});
+
+		const maps = ["Faerun", "Naerytar Dungeon"];
+		const buttons = [];
+
+		maps.forEach((mapName, i) => {
+			const button = document.createElement("button");
+			button.innerText = mapName;
+			button.addEventListener("click", () => {
+				console.log("click", mapName);
+				socket.send(JSON.stringify({ type: "showMap", data: mapName }));
+			});
+			document.body.appendChild(button);
+			buttons[i] = button;
+		});
 	</script>
 	<body>
-		Controls!
+		<noscript>
+			For full functionality of this site it is necessary to enable JavaScript. Here are the
+			<a href="https://www.enablejavascript.io/">
+				instructions how to enable JavaScript in your web browser</a
+			>.
+		</noscript>
 	</body>
 </html>

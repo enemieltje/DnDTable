@@ -1,37 +1,90 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		Head
-	</head>
-	<script>
-		// Create WebSocket connection.
-		const socket = new WebSocket("ws://localhost:8080", ["echo-protocol"]);
+		<meta charset="uft-8" />
+		<title>MAPS!</title>
+		<meta name="viewport" content="width=device-width, intial-scale=1.0" />
+		<style>
+			html,
+			body {
+				margin: 0;
+				padding: 0;
+				min-height: 100vw;
+			}
 
-		// Connection opened
-		socket.addEventListener("open", event => {
-			socket.send("Hello from map Client!");
-		});
+			img {
+				height: 100vh;
+				width: 100vw;
+				margin: auto;
+				display: block;
+			}
+		</style>
+		<script>
+			// Create WebSocket connection.
+			const socket = new WebSocket("ws://localhost:8080", ["echo-protocol"]);
+			const maps = new Map();
+			const images = [];
 
-		// Listen for messages
-		socket.addEventListener("message", event => {
-			let message = "";
-			if (event.data[0] == "{") message = JSON.parse(event.data);
-			else message = event.data;
+			// Connection opened
+			socket.addEventListener("open", event => {
+				socket.send("Hello from map Client!");
+			});
 
-			console.log("Message from server ", message);
+			// Listen for messages
+			socket.addEventListener("message", event => {
+				let message = "";
+				if (event.data[0] == "{") message = JSON.parse(event.data);
+				else message = event.data;
 
-			switch (message.type) {
-				case "replaceText": {
-					document.body.textContent = message.data;
-					break;
+				console.log("Message from server ", message);
+
+				switch (message.type) {
+					case "replaceText": {
+						document.body.textContent = message.data;
+						break;
+					}
+					case "showMap": {
+						showMap(message.data);
+						break;
+					}
+					case "addMap": {
+						addMap(message.data.name, message.data.map);
+						break;
+					}
+					default: {
+						return;
+					}
 				}
-				default: {
+			});
+
+			function addMap(mapName, src) {
+				const img = document.createElement("img");
+				img.src = src;
+				img.alt = mapName;
+				img.style.display = "none";
+				document.body.appendChild(img);
+				images.push(img);
+				maps.set(mapName, img);
+			}
+
+			function sendSocketRequest(type, data) {
+				socket.send(JSON.stringify({ type: type, data: data }));
+			}
+
+			function showMap(mapName) {
+				const img = maps.get(mapName);
+
+				if (!img) {
+					sendSocketRequest("requestMap", mapName);
 					return;
 				}
+				maps.forEach(map => {
+					map.style.display = "none";
+				});
+				img.style.display = "block";
+				console.log("show map: ", img);
 			}
-		});
-	</script>
-	<body>
-		Maps!
-	</body>
+		</script>
+	</head>
+	<body></body>
 </html>

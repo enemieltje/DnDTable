@@ -151,7 +151,7 @@ export function CountCharAfterFirst(string: string, after: string) {
 export function includesAll(string: string, ...args: string[]): boolean {
 	if (isEmptyString(string) && args.length === 0) return true;
 
-	console.debug("checking if string:", string, "includes all of:", args);
+	// console.debug("checking if string:", string, "includes all of:", args);
 
 	for (const arg of args) {
 		if (!string.includes(arg)) return false;
@@ -202,7 +202,14 @@ export function beginsWithOne(string: string, ...args: string[]) {
  * console.debug(value); // this will log " is a "
  */
 export function getBetweenValues(string: string, before: string, after: string) {
-	console.debug("checking if string:", string, "after value:", after, "and before value:", before);
+	console.debug(
+		"checking if string:",
+		string,
+		"after value:",
+		after,
+		"and before value:",
+		before
+	);
 
 	const startIndex = string.indexOf(before);
 	const endIndex = string.indexOf(after, startIndex + before.length);
@@ -437,7 +444,9 @@ export function includesIgnoreCase(string: string, ...args: string[]): boolean {
 		}
 	}
 
-	console.debug("false\n\tstring:\n\t\t" + string + "\n\tcompare string:\n\t\t" + args.join("\n"));
+	console.debug(
+		"false\n\tstring:\n\t\t" + string + "\n\tcompare string:\n\t\t" + args.join("\n")
+	);
 
 	return false;
 }
