@@ -1,6 +1,7 @@
 import http from "node:http";
 import * as ws from "websocket";
 import { LogManager, FileUtils, LoggerUtils, LogLevel } from "@utils";
+import EventEmitter from "node:events";
 
 export enum ServerStatus {
 	OFFLINE,
@@ -9,16 +10,18 @@ export enum ServerStatus {
 	WS_ONLINE,
 }
 
-export class WsServer {
+export class WsServer extends EventEmitter {
 	protected files = new Map<string, string>();
 	protected hostname: string;
 	protected port: number;
 	protected httpServer?: http.Server;
 	protected wsServer?: ws.server;
 	protected status = ServerStatus.OFFLINE;
+	protected sockets = new Map<string, ws.connection>();
 	public logger: LoggerUtils.Logger;
 
 	constructor({ hostname, port, name }: { hostname?: string; port?: number; name?: string }) {
+		super();
 		this.logger = LogManager.getLogger({
 			name: name ?? "WsServer",
 			level: LogLevel.DEBUG,
@@ -55,32 +58,41 @@ export class WsServer {
 			autoAcceptConnections: false,
 		});
 		this.status = ServerStatus.WS_ONLINE;
-		this.addListener();
+		this.acceptSockets();
 	}
 
-	protected addListener() {
+	private acceptSockets() {
 		if (this.status != ServerStatus.WS_ONLINE) return;
 		if (!this.wsServer) return;
 
 		this.wsServer.on("request", req => {
 			const connection = req.accept("echo-protocol", req.origin);
-			this.logger.info("Connection accepted.");
+			this.logger.debug("Connection accepted: ", connection.remoteAddress);
+			this.emit("wsConnect", connection);
+			this.sockets.set(connection.remoteAddress, connection);
+
 			connection.on("message", message => {
+				this.emit("wsMessage", connection);
 				if (message.type === "utf8") {
-					this.logger.info("Received Message: " + message.utf8Data);
-					connection.sendUTF(message.utf8Data);
+					this.logger.debug("Received Message: " + message.utf8Data);
 				} else if (message.type === "binary") {
-					this.logger.info(
+					this.logger.debug(
 						"Received Binary Message of " + message.binaryData.length + " bytes"
 					);
-					connection.sendBytes(message.binaryData);
 				}
 			});
+
 			connection.on("close", (_reasonCode, _description) => {
-				this.logger.info(
-					new Date() + " Peer " + connection.remoteAddress + " disconnected."
-				);
+				this.emit("wsClose", connection);
+				this.logger.debug("Peer " + connection.remoteAddress + " disconnected.");
+				this.sockets.delete(connection.remoteAddress);
 			});
+		});
+	}
+
+	public sendToSockets(data: Buffer | string) {
+		this.sockets.forEach(connection => {
+			connection.send(data);
 		});
 	}
 
