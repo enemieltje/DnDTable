@@ -1,11 +1,17 @@
 import http from "node:http";
-import {LogManager, FileUtils, LoggerUtils} from "@utils";
+import { LogManager, ConfigManager, FileUtils, LoggerUtils } from "@utils";
 import { join as joinpath } from "node:path";
+
+const logger = LogManager.getLogger({
+	name: "index",
+});
 
 const hostname = '0.0.0.0';
 const mapPort = 8080;
 const controlPort = 8081;
-const mapIndex = FileUtils;
+const mapIndex = FileUtils.loadString("./client/map/index.html", {defaultString: "map"});
+const controlIndex = FileUtils.loadString("./client/control/index.html", {defaultString: "map"});
+
 
 
 const logConfig = {
@@ -20,20 +26,16 @@ LogManager.logToDefaultFile(joinpath(logConfig.LogDirectory, "/default.log"), {
   LogEverything: false,
 });
 
-const logger = LogManager.getLogger({
-  name: 'index',
-})
-
 const mapServer = http.createServer((_req, res) => {
   res.statusCode = 200;
   res.setHeader('Content-Type', 'text/plain');
-  res.end('Map\n');
+  res.end(mapIndex);
 });
 
 const controlServer = http.createServer((_req, res) => {
   res.statusCode = 200;
   res.setHeader('Content-Type', 'text/plain');
-  res.end('Controls\n');
+  res.end(controlIndex);
 });
 
 mapServer.listen(mapPort, hostname, () => {

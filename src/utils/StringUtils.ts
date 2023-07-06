@@ -1,9 +1,9 @@
 import { LogManager, LogLevel } from "@utils";
 
-const logger = LogManager.getLogger({
-	name: "StringUtils",
-	level: LogLevel.INFO,
-});
+// const console = LogManager.getconsole({
+// 	name: "StringUtils",
+// 	level: LogLevel.INFO,
+// });
 
 /**
  * @returns true if given string is empty
@@ -126,7 +126,7 @@ export function getTimeStamp(
 		{ day, month, year, hour, minute, seconds, milliseconds }
 	);
 
-	logger.debug(`\n\ttimestamp: ${timestamp}`);
+	console.debug(`\n\ttimestamp: ${timestamp}`);
 
 	return timestamp;
 }
@@ -151,7 +151,7 @@ export function CountCharAfterFirst(string: string, after: string) {
 export function includesAll(string: string, ...args: string[]): boolean {
 	if (isEmptyString(string) && args.length === 0) return true;
 
-	logger.debug("checking if string:", string, "includes all of:", args);
+	console.debug("checking if string:", string, "includes all of:", args);
 
 	for (const arg of args) {
 		if (!string.includes(arg)) return false;
@@ -166,7 +166,7 @@ export function includesAll(string: string, ...args: string[]): boolean {
 export function includesOne(string: string, ...args: string[]) {
 	if (isEmptyString(string) && args.length === 0) return true;
 
-	logger.debug("checking if string:", string, "includes one of:", args);
+	console.debug("checking if string:", string, "includes one of:", args);
 
 	for (const arg of args) {
 		if (string.includes(arg)) return true;
@@ -181,7 +181,7 @@ export function includesOne(string: string, ...args: string[]) {
 export function beginsWithOne(string: string, ...args: string[]) {
 	if (isEmptyString(string) && args.length === 0) return true;
 
-	logger.debug("checking if string:", string, "begins with one of:", args);
+	console.debug("checking if string:", string, "begins with one of:", args);
 
 	for (const arg of args) {
 		if (string.startsWith(arg)) return true;
@@ -202,7 +202,7 @@ export function beginsWithOne(string: string, ...args: string[]) {
  * console.debug(value); // this will log " is a "
  */
 export function getBetweenValues(string: string, before: string, after: string) {
-	logger.debug("checking if string:", string, "after value:", after, "and before value:", before);
+	console.debug("checking if string:", string, "after value:", after, "and before value:", before);
 
 	const startIndex = string.indexOf(before);
 	const endIndex = string.indexOf(after, startIndex + before.length);
@@ -223,7 +223,7 @@ export function getBetweenValues(string: string, before: string, after: string) 
  * console.debug(value); // this will log " a "
  */
 export function getLastBetweenValues(string: string, afterLast: string, before: string) {
-	logger.debug(
+	console.debug(
 		"checking if string:",
 		string,
 		"after last value of:",
@@ -248,7 +248,7 @@ export function getLastBetweenValues(string: string, afterLast: string, before: 
 export function maxStringLength(...stringArray: string[]) {
 	const maxLength = Math.max(...stringArray.map(str => str.length));
 
-	//logger.debug("longest string length is " + maxLength + " from:", ...stringArray);
+	//console.debug("longest string length is " + maxLength + " from:", ...stringArray);
 
 	return maxLength;
 }
@@ -307,7 +307,7 @@ export function replaceWithArgs(string: string | ReplaceArgsOptions, ...args: st
 		count += 1;
 	}
 
-	logger.debug(
+	console.debug(
 		"filling string with args:",
 		args,
 		"with string:",
@@ -384,7 +384,7 @@ export function replaceLast(string: string, toReplace: string, replaceWith: stri
 		replaceWith +
 		string.substring(lastIndex + toReplace.length);
 
-	logger.debug(
+	console.debug(
 		"\n\tstring: \n\t\t" +
 			string +
 			"\n\ttoReplace: \n\t\t" +
@@ -414,7 +414,7 @@ export function equalsIgnoreCase(string: string, ...args: string[]): boolean {
 		if (arg != null && typeof arg === "string" && upperString == arg.toLowerCase()) bool = true;
 	}
 
-	logger.debug(
+	console.debug(
 		bool + "\n\tstring: \n\t\t" + string + "\n\tcomparestring: \n\t\t" + args.join("\n")
 	);
 
@@ -432,12 +432,12 @@ export function includesIgnoreCase(string: string, ...args: string[]): boolean {
 
 	for (const arg of args) {
 		if (arg && upperString.includes(arg.toLowerCase())) {
-			logger.debug("true\n\tstring:\n\t\t" + string + "\n\tcompare string:\n\t\t" + arg);
+			console.debug("true\n\tstring:\n\t\t" + string + "\n\tcompare string:\n\t\t" + arg);
 			return true;
 		}
 	}
 
-	logger.debug("false\n\tstring:\n\t\t" + string + "\n\tcompare string:\n\t\t" + args.join("\n"));
+	console.debug("false\n\tstring:\n\t\t" + string + "\n\tcompare string:\n\t\t" + args.join("\n"));
 
 	return false;
 }
@@ -459,7 +459,7 @@ export function splitAtLast(string: string, separator: string): string[] {
 
 	const result = [first, last];
 
-	logger.debug("string to split:", string, "and seperating at:", separator, "result: ", result);
+	console.debug("string to split:", string, "and seperating at:", separator, "result: ", result);
 
 	return result;
 }
@@ -484,7 +484,7 @@ export function deepCompare(str1: string, str2: string, minSimilarity = 0.8): bo
 
 	const isSimilar = similarity >= minSimilarity;
 
-	logger.debug(
+	console.debug(
 		"\n\tmatchingChars: " +
 			matchingChars +
 			"\n\tdistance: " +
