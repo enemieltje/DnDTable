@@ -1,0 +1,79 @@
+{
+	"compilerOptions": {
+		"strict": true,
+		"lib": [
+			"ESNext"
+		],
+		"outDir": "dist",
+		"module": "ESNext",
+		"target": "ESNext",
+		"moduleResolution": "node",
+		"resolveJsonModule": true,
+		"useUnknownInCatchVariables": true,
+		"strictPropertyInitialization": true,
+		"forceConsistentCasingInFileNames": true,
+		"noUncheckedIndexedAccess": true,
+		"alwaysStrict": true,
+		"noUnusedParameters": true,
+		"strictBindCallApply": true,
+		"strictNullChecks": true,
+		"allowUnreachableCode": false,
+		"esModuleInterop": true,
+		"skipLibCheck": true,
+		"importHelpers": true,
+		"noImplicitAny": true,
+		"typeRoots": [
+			"node_modules/@types"
+		],
+		"types": [
+			"node"
+		],
+		"sourceMap": false,
+		"baseUrl": "src",
+		"paths": {
+			"@root/*": [
+				"*"
+			],
+			"@lib/*": [
+				"lib/*"
+			],
+			"@utils": [
+				"utils/index.ts"
+			],
+			"LoggerUtils": [
+				"utils/LoggerUtils.ts"
+			],
+			"LangUtils": [
+				"utils/LangUtils.ts"
+			],
+			"ConfigUtils": [
+				"utils/ConfigUtils.ts"
+			],
+			"jsoncUtils": [
+				"utils/jsoncUtils.ts"
+			],
+			"StringUtils": [
+				"utils/StringUtils.ts"
+			],
+			"FileUtils": [
+				"utils/FileUtils.ts"
+			],
+			"ObjectUtils": [
+				"utils/ObjectUtils.ts"
+			],
+		}
+	},
+	"include": [
+		"./src",
+		"./client"
+	],
+	"exclude": [
+		"/.github",
+		"/.vscode",
+		"/dist",
+		"/data",
+		"/logs",
+		"/coverage",
+		"/node_modules"
+	]
+}
