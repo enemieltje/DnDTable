@@ -1,0 +1,26 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"type": "npm",
+			"script": "dev",
+			"problemMatcher": [],
+			"label": "npm: dev",
+			"detail": "tsx watch src/index.ts NODE_ENV=development"
+		},
+		{
+			"type": "npm",
+			"script": "format",
+			"problemMatcher": [],
+			"label": "npm: format",
+			"detail": "npm run prettier:fix && npm run lint:fix"
+		},
+		{
+			"type": "npm",
+			"script": "build",
+			"problemMatcher": [],
+			"label": "npm: build",
+			"detail": "npm run build && node ./dist/index.js"
+		},
+	]
+}

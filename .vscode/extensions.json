@@ -1,0 +1,17 @@
+{
+    "recommendations": [
+		// formatting
+		"dbaeumer.vscode-eslint",
+		"esbenp.prettier-vscode",
+		"streetsidesoftware.code-spell-checker",
+
+		// team helpers
+		"mhutchie.git-graph",
+		"ms-vsliveshare.vsliveshare",
+		"jgclark.vscode-todo-highlight",
+
+		// visual helpers
+		"vscode-icons-team.vscode-icons",
+		"ahmadawais.emoji-log-vscode"
+	]
+}
