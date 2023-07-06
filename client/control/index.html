@@ -7,29 +7,52 @@
 		// Create WebSocket connection.
 		const socket = new WebSocket("ws://192.168.178.50:8081", ["echo-protocol"]);
 
+		let maps = [];
+		let buttons = [];
+
 		// Connection opened
 		socket.addEventListener("open", event => {
+			console.log("ws open");
 			socket.send("Hello from control Client!");
+			socket.send(JSON.stringify({ type: "getMapList", data: " " }));
 		});
 
 		// Listen for messages
 		socket.addEventListener("message", event => {
-			console.log("Message from server ", event.data);
+			let message = "";
+			if (event.data[0] == "{") message = JSON.parse(event.data);
+			else message = event.data;
+
+			console.log("Message from server ", message);
+
+			switch (message.type) {
+				case "mapList": {
+					maps = message.data;
+					updateButtons();
+					break;
+				}
+				default: {
+					return;
+				}
+			}
 		});
 
-		const maps = ["Faerun", "Naerytar Dungeon"];
-		const buttons = [];
-
-		maps.forEach((mapName, i) => {
-			const button = document.createElement("button");
-			button.innerText = mapName;
-			button.addEventListener("click", () => {
-				console.log("click", mapName);
-				socket.send(JSON.stringify({ type: "showMap", data: mapName }));
+		function updateButtons() {
+			buttons.forEach((button, i) => {
+				document.body.removeChild(button);
 			});
-			document.body.appendChild(button);
-			buttons[i] = button;
-		});
+			buttons = [];
+			maps.forEach((mapName, i) => {
+				const button = document.createElement("button");
+				button.innerText = mapName;
+				button.addEventListener("click", () => {
+					console.log("click", mapName);
+					socket.send(JSON.stringify({ type: "showMap", data: mapName }));
+				});
+				document.body.appendChild(button);
+				buttons[i] = button;
+			});
+		}
 	</script>
 	<body>
 		<noscript>

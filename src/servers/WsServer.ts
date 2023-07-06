@@ -1,6 +1,6 @@
 import http from "node:http";
 import fs from "node:fs";
-import { join } from "node:path";
+import { join, resolve } from "node:path";
 import * as ws from "websocket";
 import { LogManager, FileUtils, LoggerUtils, LogLevel, StringUtils } from "@utils";
 import EventEmitter from "node:events";
@@ -158,7 +158,7 @@ export class WsServer extends EventEmitter {
 		this.files.set(name, path);
 	}
 
-	static typedMessageToString(type: string, data: string) {
+	static typedMessageToString(type: string, data: unknown) {
 		return JSON.stringify({ type, data });
 	}
 
@@ -176,5 +176,5 @@ export class WsServer extends EventEmitter {
 
 export type TypedMessage = {
 	type: string;
-	data: string;
+	data: unknown;
 };
