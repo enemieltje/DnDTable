@@ -1,41 +1,44 @@
 {
-  "name": "dndtable",
-  "version": "0.0.1",
-  "description": "",
-  "main": "dist/index.js",
-  "engines": {
-    "node": ">=18.16.0",
-    "npm": ">=9.5.0"
-  },
-  "scripts": {
-    "dev": "tsx watch src/index.ts NODE_ENV=development",
-    "reset": "rm -r -f dist && rm -r -f data && rm -r -f logs",
-    "build": "rm -r -f dist && tsc --build && resolve-tspaths",
-    "prod": "node ./dist/index.js",
-    "prod:firsttime": "npm install && npm run build && node ./dist/index.js FIRSTTIME=true"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/enemieltje/DnDTable.git"
-  },
-  "author": "Lord_Redst0ne",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/enemieltje/DnDTable/issues"
-  },
-  "homepage": "https://github.com/enemieltje/DnDTable#readme",
-  "dependencies": {
-    "dotenv": "^16.1.4",
-    "websocket": "^1.0.34"
-  },
-  "devDependencies": {
-    "@types/node": "18.16.0",
-    "@types/websocket": "^1.0.5",
-    "npm-check-updates": "^16.10.12",
-    "resolve-tspaths": "^0.8.13",
-    "tsx": "^3.12.7",
-    "typescript": "^5.1.3"
-  },
+	"name": "dndtable",
+	"version": "0.0.1",
+	"description": "",
+	"main": "dist/index.js",
+	"engines": {
+		"node": ">=18.16.0",
+		"npm": ">=9.5.0"
+	},
+	"scripts": {
+		"dev": "tsx watch src/index.ts NODE_ENV=development",
+		"reset": "rm -r -f dist && rm -r -f data && rm -r -f logs",
+		"build": "rm -r -f dist && tsc --build && resolve-tspaths",
+		"prod": "node ./dist/index.js",
+		"prod:firsttime": "npm install && npm run build && node ./dist/index.js FIRSTTIME=true"
+	},
+	"imports": {
+		"#Utils": "./src/utils/external/dist/index.js"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/enemieltje/DnDTable.git"
+	},
+	"author": "Lord_Redst0ne",
+	"license": "ISC",
+	"bugs": {
+		"url": "https://github.com/enemieltje/DnDTable/issues"
+	},
+	"homepage": "https://github.com/enemieltje/DnDTable#readme",
+	"dependencies": {
+		"dotenv": "^16.1.4",
+		"websocket": "^1.0.34"
+	},
+	"devDependencies": {
+		"@types/node": "18.16.0",
+		"@types/websocket": "^1.0.5",
+		"npm-check-updates": "^16.10.12",
+		"resolve-tspaths": "^0.8.13",
+		"tsx": "^3.12.7",
+		"typescript": "^5.1.3"
+	},
 	"prettier": {
 		"printWidth": 100,
 		"tabWidth": 4,

@@ -1,0 +1,3 @@
+[submodule "src/utils/external"]
+	path = src/utils/external
+	url = https://git.axoid.dev/jokingchicken/tsnode-utils.git

@@ -1,4 +1,4 @@
-import { LogManager, LoggerUtils, LogLevel, FileUtils } from "@utils";
+import { LogManager, LoggerUtils, LogLevel, FileUtils } from "#Utils";
 import * as ws from "websocket";
 import { join, basename } from "node:path";
 import { TypedMessage, WsServer } from "./servers/WsServer";
